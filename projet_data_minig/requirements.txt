@@ -1,0 +1,7 @@
+streamlit
+langchain
+ollama
+langchain_ollama
+streamlit-option-menu
+imapclient 
+bs4 
