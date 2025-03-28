@@ -10,6 +10,20 @@ services:
     environment:
       - OLLAMA_HOST=0.0.0.0
 
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+    #   - OLLAMA_FLASH_ATTENTION=1
+    #   - OLLAMA_NUM_PARALLEL:0
+    #   - OLLAMA_SCHED_SPREAD:False
+    #   - OLLAMA_HOST=0.0.0.0
+    # runtime: nvidia
   app:
     build: .
     container_name: spam_app

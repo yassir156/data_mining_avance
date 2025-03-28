@@ -110,21 +110,51 @@ uploaded_file = st.file_uploader("📂 Charge un fichier CSV contenant des email
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
-    
+
     st.write("🔍 **Aperçu des données chargées :**")
     st.dataframe(df.head())
 
     if st.button("🚀 Analyser les Tendances"):
         with st.spinner("🔍 Analyse en cours..."):
-            time.sleep(2)  # Simulation d'un temps de traitement
-
             try:
-                emails_text = "\n".join(df["email"].sample(min(10, len(df)), random_state=random.randint(1, 100)).tolist())  
-                response = llm([HumanMessage(content=f"Analyse ces emails et détecte les tendances principales : {emails_text}")])
+                # 1. Préparation du contenu pour le LLM
+                max_rows = min(15, len(df))
+                selected_rows = df.sample(n=max_rows, random_state=random.randint(1, 100))
+
+                # Construction du prompt avec contexte structuré
+                rows_text = ""
+                for i, row in selected_rows.iterrows():
+                    rows_text += f"""
+                        Email {i+1} :
+                        Expéditeur : {row['Expéditeur']}
+                        Objet : {row['Objet']}
+                        Score : {row['Score']}
+                        Label : {row['Label']}
+                        Contenu : {row['Contenu']}
+                        ---
+                        """
+
+                final_prompt = f"""
+                Tu es un expert en analyse de contenu email. On t'a donné une liste d'emails classés avec un score de spam et des libellés.
+
+                Voici un extrait d'exemples :
+
+                {rows_text}
+
+                Analyse les tendances générales dans ces emails :
+                - Quels sont les mots ou sujets récurrents ?
+                - Y a-t-il des motifs communs dans les SPAM ?
+                - Quels types d'expéditeurs semblent suspects ?
+                - Fais un petit résumé analytique clair, utile, et structuré.
+
+                Réponds sous forme d'un **rapport clair**.
+                """
+
+                response = llm([HumanMessage(content=final_prompt)])
                 trends = response.content.strip()
 
-                # Affichage stylisé des tendances détectées
-                st.markdown("<h3 style='color: #eb6f92;'>✨ Tendances Détectées :</h3>", unsafe_allow_html=True)
+                # Affichage stylisé du rapport
+                st.markdown("<h3 style='color: #eb6f92;'>📈 Rapport d'Analyse des Tendances :</h3>", unsafe_allow_html=True)
                 st.markdown(f"<div class='result-box'> {trends} </div>", unsafe_allow_html=True)
 
             except Exception as e:
