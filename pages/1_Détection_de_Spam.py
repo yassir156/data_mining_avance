@@ -18,8 +18,8 @@ MODEL_NAME = "deepseek-r1"
 llm = ChatOllama(base_url=OLLAMA_API_BASE, model=MODEL_NAME)
 
 # Configuration IMAP
-EMAIL_ACCOUNT = "yassircheikh5@gmail.com"
-EMAIL_PASSWORD = ""
+EMAIL_ACCOUNT = "" #your email
+EMAIL_PASSWORD = "" #email application password
 IMAP_SERVER = "imap.gmail.com"  # Pour Gmail, sinon adaptez
 
 def clean_email_content(msg):
