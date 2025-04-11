@@ -19,7 +19,7 @@ llm = ChatOllama(base_url=OLLAMA_API_BASE, model=MODEL_NAME)
 
 # Configuration IMAP
 EMAIL_ACCOUNT = "yassircheikh5@gmail.com"
-EMAIL_PASSWORD = "osgv wfqx nymi rpho"
+EMAIL_PASSWORD = ""
 IMAP_SERVER = "imap.gmail.com"  # Pour Gmail, sinon adaptez
 
 def clean_email_content(msg):
